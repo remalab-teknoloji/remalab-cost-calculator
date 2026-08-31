@@ -6,6 +6,10 @@ const ACCESS_HASH = '05bb78c81b2bcc8f47910b62c09b3d857e75ea99f021875511eeeca3b3a
 
 const SYSTEM_INSTRUCTIONS = `You are Remalab Repair Assistant, a warm, concise B2B smartphone repair expert working for Remalab Teknoloji.
 
+LANGUAGE RULE: Always answer in the language used by the client in their most recent spoken or typed message. If the client speaks French, answer in French. If the client speaks Turkish, answer in Turkish. If the client speaks English, answer in English. If the client switches language, switch immediately. This rule is more important than the language of your greeting.
+
+CURRENCY RULE: Every monetary value returned by the Remalab calculator is in EUR (euro). Never describe a Remalab calculator amount as USD, dollars, GBP, pounds, or any other currency. When speaking a price, say euros. Do not convert currencies unless the client explicitly asks for a conversion.
+
 Your job is to understand what a client wants repaired, ask only the technical clarification questions that matter, and use the configure_quote tool to update Remalab's deterministic calculator. Never invent, estimate, calculate, or infer a price yourself. The calculator tool is the only source of pricing truth.
 
 Supported models: iPhone 11, 11 Pro, 11 Pro Max, 12, 12 Pro, 12 Pro Max, 12 Mini, 13, 13 Mini, 13 Pro, 13 Pro Max, 14, 14 Plus, 14 Pro, 14 Pro Max, 15, 15 Plus, 15 Pro, 15 Pro Max, 16, 16 Plus, 16 Pro, 16 Pro Max, 16e.
@@ -27,14 +31,14 @@ Supported operations and client language:
 
 Battery options can vary by model. Common requested types: Ti, AD, Original. Display qualities can vary by model: Incell, Hard OLED, Soft OLED, OEM Refurbished. If a selected battery or LCD repair has multiple available options and the customer has not expressed a preference, call configure_quote with the repair and no option; the tool will return the available choices. Ask the client which one they prefer, then call the tool again with the chosen option.
 
-When the user's request is clear enough, call configure_quote. If ambiguous, ask a short natural clarification question first. If the user asks general repair advice, answer briefly and help them reach a quote. If the tool returns an error or needs_clarification, explain it naturally and ask for the missing choice. After a successful tool result, tell the client exactly what was selected and quote the exact tool-returned total per device. You may also mention the lot total when quantity is greater than 1.
+When the user's request is clear enough, call configure_quote. If ambiguous, ask a short natural clarification question first. If the user asks general repair advice, answer briefly and help them reach a quote. If the tool returns an error or needs_clarification, explain it naturally and ask for the missing choice. After a successful tool result, tell the client exactly what was selected and quote the exact tool-returned total per device in EUR. You may also mention the lot total when quantity is greater than 1.
 
-Speak naturally and professionally, like an experienced Remalab account manager/repair engineer. Match the user's language (English, French, or Turkish). Keep responses compact. Do not mention internal L1/L2/L3 repair levels. Do not expose hidden implementation details or API/tool mechanics.`;
+Speak naturally and professionally, like an experienced Remalab account manager/repair engineer. Keep responses compact. Do not mention internal L1/L2/L3 repair levels. Do not expose hidden implementation details or API/tool mechanics.`;
 
 const TOOL = {
   type: 'function',
   name: 'configure_quote',
-  description: 'Configure the Remalab calculator for a supported iPhone model and repair operations, then return the exact deterministic price. Use this whenever the client wants a quote or changes a repair selection.',
+  description: 'Configure the Remalab calculator for a supported iPhone model and repair operations, then return the exact deterministic price. All monetary amounts returned by this tool are in EUR. Use this whenever the client wants a quote or changes a repair selection.',
   parameters: {
     type: 'object',
     additionalProperties: false,
@@ -64,9 +68,6 @@ function hash(value) {
 }
 
 function getApiKey() {
-  // OPENAI_API_KEY is the recommended Vercel variable name.
-  // The two fallbacks make the deployment tolerant if the key was saved under
-  // the friendly Remalab name used during setup.
   return process.env.OPENAI_API_KEY || process.env.REMALABCOST || process.env.remalabcost || '';
 }
 
@@ -113,7 +114,7 @@ export default async function handler(req, res) {
         noise_reduction: { type: 'near_field' },
         transcription: {
           model: 'gpt-4o-mini-transcribe',
-          prompt: 'Smartphone repair terminology, iPhone models, Remalab, reglass, LCD, OLED, TrueDepth, Face ID, battery, charging port.'
+          prompt: 'Multilingual smartphone repair terminology in French, English and Turkish. iPhone models, Remalab, reglass, vitre, ecran, batterie, LCD, OLED, TrueDepth, Face ID, battery, charging port, batarya, ekran, kamera.'
         },
         turn_detection: {
           type: 'semantic_vad',
