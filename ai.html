@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Remalab AI Repair Assistant</title>
+<style>
+:root{--brand:#26345f;--brand2:#3a4d86;--ink:#172033;--muted:#667085;--line:#e4e7ec;--bg:#f4f5f7;--card:#fff;--soft:#f8f9fc;--green:#067647;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.hidden{display:none!important}
+.gate{min-height:100vh;display:grid;place-items:center;padding:24px}.gate-card{width:min(100%,520px);background:#fff;border:1px solid var(--line);border-radius:18px;padding:44px 40px 36px;box-shadow:0 18px 55px rgba(25,34,54,.08)}.gate-logo{display:block;width:205px;max-width:72%;margin:0 auto 34px}.eyebrow{text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b7280;font-weight:800;margin-bottom:14px}.gate h1{text-align:center;font-size:34px;line-height:1.05;letter-spacing:-.035em;margin:0;color:#202b55}.gate p{text-align:center;color:var(--muted);font-size:14px;line-height:1.6;margin:18px auto 28px}.gate label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;margin-bottom:7px}.gate input,.composer input{width:100%;border:1px solid #d0d5dd;border-radius:10px;padding:13px 14px;font:inherit;font-size:16px}.gate button,.btn{border:0;border-radius:10px;padding:12px 15px;font-weight:800;cursor:pointer}.gate button{width:100%;margin-top:12px;background:var(--brand);color:#fff}.error{min-height:20px;text-align:center;color:var(--red);font-size:12px;margin-top:10px}
+.shell{max-width:1320px;margin:auto;padding:20px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}.brand{display:flex;align-items:center;gap:14px}.brand img{width:150px;height:auto}.brand h1{font-size:19px;margin:0}.brand small{display:block;color:var(--muted);margin-top:2px}.top-actions{display:flex;gap:8px;align-items:center}.status{font-size:11px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;color:var(--muted)}.status.live{color:var(--green);border-color:#abefc6;background:#ecfdf3}.status.connecting{color:#b54708;background:#fffaeb;border-color:#fedf89}.exit{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:7px 10px;cursor:pointer}
+.grid{display:grid;grid-template-columns:minmax(350px,.72fr) minmax(0,1.38fr);gap:14px}.assistant{background:linear-gradient(145deg,var(--brand),var(--brand2));color:#fff;border-radius:18px;overflow:hidden;min-height:610px;display:flex;flex-direction:column}.assistant-head{padding:20px 20px 13px;border-bottom:1px solid rgba(255,255,255,.12)}.assistant-head .eyebrow{text-align:left;color:#fff;opacity:.62;margin:0 0 5px}.assistant-head h2{font-size:22px;margin:0 0 6px}.assistant-head p{font-size:12px;line-height:1.5;opacity:.72;margin:0}.voice-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.voice-btn{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.11);color:#fff;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:800;cursor:pointer}.voice-btn.primary{background:#fff;color:var(--brand);border-color:#fff}.voice-btn.active{background:#ecfdf3;color:#067647;border-color:#abefc6}.voice-btn:disabled{opacity:.48;cursor:not-allowed}.chat{flex:1;padding:15px 16px;overflow:auto;max-height:510px}.msg{max-width:92%;border-radius:13px;padding:10px 12px;margin:0 0 9px;font-size:12px;line-height:1.48;white-space:pre-wrap}.msg.assistant-msg{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12)}.msg.user-msg{margin-left:auto;background:#fff;color:var(--ink)}.msg.system-msg{background:transparent;border:1px dashed rgba(255,255,255,.24);font-size:11px;opacity:.75}.composer{padding:13px;border-top:1px solid rgba(255,255,255,.12);display:grid;grid-template-columns:1fr auto;gap:8px}.composer input{border:0}.composer .send{background:#fff;color:var(--brand);min-width:70px}.hint{grid-column:1/-1;font-size:10px;opacity:.54;padding:0 2px}
+.calc-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}.calc-head{padding:11px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.calc-head strong{font-size:13px}.calc-head span{font-size:11px;color:var(--muted)}iframe{display:block;width:100%;height:1450px;border:0;background:#f6f7fa}
+@media(max-width:950px){.grid{grid-template-columns:1fr}.assistant{min-height:520px}.chat{max-height:380px}iframe{height:1800px}}@media(max-width:620px){.shell{padding:10px}.topbar{align-items:flex-start;flex-direction:column}.brand img{width:135px}.top-actions{width:100%;justify-content:space-between}.gate-card{padding:34px 22px}.gate h1{font-size:28px}.assistant-head{padding:17px}.assistant-head h2{font-size:20px}}
+</style>
+</head>
+<body>
+<section id="gate" class="gate">
+  <div class="gate-card">
+    <img class="gate-logo" src="https://remalab.com/wp-content/uploads/2024/07/footer-logo_R.png" alt="Remalab Teknoloji">
+    <div class="eyebrow">Authorized client access</div>
+    <h1>AI Repair Cost<br>Assistant</h1>
+    <p>Talk or write naturally. Our assistant will help identify the right repair and use the Remalab calculator for the exact cost.</p>
+    <form id="gateForm">
+      <label for="code">Access code</label>
+      <input id="code" type="password" autocomplete="current-password" required placeholder="Enter access code">
+      <button type="submit">Enter Assistant</button>
+      <div id="gateError" class="error" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<main id="app" class="hidden">
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <img src="https://remalab.com/wp-content/uploads/2024/07/footer-logo_R.png" alt="Remalab Teknoloji">
+        <div><h1>AI Repair Assistant</h1><small>Conversation + deterministic Remalab pricing</small></div>
+      </div>
+      <div class="top-actions">
+        <span id="status" class="status">AI not connected</span>
+        <button id="exitBtn" class="exit" type="button">Exit</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="assistant">
+        <div class="assistant-head">
+          <div class="eyebrow">Remalab Repair Assistant</div>
+          <h2>Tell me what you need</h2>
+          <p>Example: “I have an iPhone 14. The front glass is cracked and I need a new battery.”</p>
+          <div class="voice-controls">
+            <button id="talkBtn" class="voice-btn primary" type="button">🎙 Start voice conversation</button>
+            <button id="muteBtn" class="voice-btn" type="button" disabled>🔊 Sound on</button>
+            <button id="disconnectBtn" class="voice-btn" type="button" disabled>Disconnect</button>
+          </div>
+        </div>
+        <div id="chat" class="chat" aria-live="polite">
+          <div class="msg assistant-msg">Hello. Tell me the iPhone model and what you want to repair. You can type below or start a voice conversation.</div>
+        </div>
+        <div class="composer">
+          <input id="message" type="text" placeholder="Describe the device and repair…" autocomplete="off">
+          <button id="sendBtn" class="btn send" type="button">Send</button>
+          <div class="hint">The AI never calculates prices itself; it reads the exact result from the Remalab calculator.</div>
+        </div>
+      </section>
+
+      <section class="calc-card">
+        <div class="calc-head"><strong>Remalab Cost Calculator</strong><span>Updated automatically by the assistant</span></div>
+        <iframe id="calculator" title="Remalab Cost Calculator"></iframe>
+      </section>
+    </div>
+  </div>
+</main>
+<audio id="remoteAudio" autoplay></audio>
+
+<script>
+const ACCESS_HASH='05bb78c81b2bcc8f47910b62c09b3d857e75ea99f021875511eeeca3b3a9bdd8';
+const ACCESS_KEY='remalab_cost_access';
+const gate=document.getElementById('gate'), app=document.getElementById('app'), gateForm=document.getElementById('gateForm'), codeInput=document.getElementById('code'), gateError=document.getElementById('gateError');
+const statusEl=document.getElementById('status'), talkBtn=document.getElementById('talkBtn'), muteBtn=document.getElementById('muteBtn'), disconnectBtn=document.getElementById('disconnectBtn');
+const chat=document.getElementById('chat'), messageInput=document.getElementById('message'), sendBtn=document.getElementById('sendBtn'), frame=document.getElementById('calculator'), remoteAudio=document.getElementById('remoteAudio');
+let accessCodeValue='', pc=null, dc=null, localStream=null, connectionMode=null, muted=false, assistantDraft=null;
+
+async function sha256(text){const data=new TextEncoder().encode(text);const digest=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+function setStatus(text,kind=''){statusEl.textContent=text;statusEl.className='status'+(kind?' '+kind:'')}
+function appendMessage(role,text){if(text===undefined||text===null)return null;const el=document.createElement('div');el.className='msg '+(role==='user'?'user-msg':role==='system'?'system-msg':'assistant-msg');el.textContent=text;chat.appendChild(el);chat.scrollTop=chat.scrollHeight;return el}
+function showApp(){sessionStorage.setItem(ACCESS_KEY,'1');gate.classList.add('hidden');app.classList.remove('hidden');frame.src='calculator.html';setTimeout(()=>messageInput.focus(),150)}
+function lockApp(){disconnectRealtime(false);accessCodeValue='';sessionStorage.removeItem(ACCESS_KEY);app.classList.add('hidden');gate.classList.remove('hidden');codeInput.value='';gateError.textContent='';codeInput.focus()}
+
+gateForm.addEventListener('submit',async e=>{e.preventDefault();gateError.textContent='';const value=codeInput.value;if(await sha256(value)!==ACCESS_HASH){codeInput.value='';gateError.textContent='Incorrect access code.';return}accessCodeValue=value;codeInput.value='';showApp()});
+document.getElementById('exitBtn').addEventListener('click',lockApp);
+
+frame.addEventListener('load',()=>{try{sessionStorage.setItem(ACCESS_KEY,'1');const d=frame.contentDocument;const g=d.getElementById('accessGate'),a=d.getElementById('calculatorApp');if(g)g.style.display='none';if(a)a.classList.remove('app-hidden');resizeFrame()}catch(e){}});
+function resizeFrame(){try{frame.style.height=Math.max(1200,frame.contentDocument.documentElement.scrollHeight+30)+'px'}catch(e){}}
+
+function waitForChannelOpen(){return new Promise((resolve,reject)=>{if(dc&&dc.readyState==='open')return resolve();const started=Date.now();const timer=setInterval(()=>{if(dc&&dc.readyState==='open'){clearInterval(timer);resolve()}else if(Date.now()-started>12000){clearInterval(timer);reject(new Error('AI connection timeout'))}},80)})}
+
+async function startRealtime(withMic){
+  if(!accessCodeValue){appendMessage('system','Please exit and enter the access code again to start the AI session.');return}
+  if(pc&&dc&&dc.readyState==='open'&&connectionMode===(withMic?'voice':'text'))return;
+  disconnectRealtime(false);
+  setStatus('Connecting AI…','connecting');talkBtn.disabled=true;sendBtn.disabled=true;
+  try{
+    const tokenRes=await fetch('/api/realtime-token',{method:'POST',headers:{'X-Remalab-Access-Code':accessCodeValue}});
+    const tokenData=await tokenRes.json();
+    if(!tokenRes.ok||!tokenData.value)throw new Error(tokenData.error||'AI session unavailable');
+
+    pc=new RTCPeerConnection();
+    remoteAudio.autoplay=true;remoteAudio.muted=muted;
+    pc.ontrack=e=>{remoteAudio.srcObject=e.streams[0]};
+    if(withMic){
+      localStream=await navigator.mediaDevices.getUserMedia({audio:true});
+      localStream.getAudioTracks().forEach(track=>pc.addTrack(track,localStream));
+    }else{
+      pc.addTransceiver('audio',{direction:'recvonly'});
+    }
+    dc=pc.createDataChannel('oai-events');
+    dc.addEventListener('open',()=>{setStatus(withMic?'Voice AI connected':'AI chat connected','live');disconnectBtn.disabled=false;muteBtn.disabled=false;talkBtn.disabled=false;sendBtn.disabled=false;if(withMic){talkBtn.textContent='🎙 Voice connected';talkBtn.classList.add('active');appendMessage('system','Voice conversation connected. You can speak naturally and interrupt the assistant at any time.')}});
+    dc.addEventListener('message',handleRealtimeEvent);
+    dc.addEventListener('close',()=>setStatus('AI disconnected'));
+    const offer=await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    const sdpRes=await fetch('https://api.openai.com/v1/realtime/calls',{method:'POST',body:offer.sdp,headers:{Authorization:`Bearer ${tokenData.value}`,'Content-Type':'application/sdp'}});
+    if(!sdpRes.ok)throw new Error('Could not establish voice connection');
+    await pc.setRemoteDescription({type:'answer',sdp:await sdpRes.text()});
+    connectionMode=withMic?'voice':'text';
+    await waitForChannelOpen();
+    if(withMic)dc.send(JSON.stringify({type:'response.create',response:{instructions:'Greet the client in one short sentence and invite them to describe the phone and repair. Do not call a tool until they describe a repair.'}}));
+  }catch(err){
+    console.error(err);disconnectRealtime(false);setStatus('AI unavailable');appendMessage('system',err.message||'The AI service could not start.');
+  }finally{talkBtn.disabled=false;sendBtn.disabled=false}
+}
+
+function disconnectRealtime(showMessage=true){
+  if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null}
+  if(dc){try{dc.close()}catch(e){}dc=null}
+  if(pc){try{pc.close()}catch(e){}pc=null}
+  remoteAudio.srcObject=null;connectionMode=null;talkBtn.textContent='🎙 Start voice conversation';talkBtn.classList.remove('active');disconnectBtn.disabled=true;muteBtn.disabled=true;setStatus('AI not connected');if(showMessage)appendMessage('system','AI session disconnected.');
+}
+
+talkBtn.addEventListener('click',async()=>{if(connectionMode==='voice'&&dc?.readyState==='open'){disconnectRealtime();return}await startRealtime(true)});
+disconnectBtn.addEventListener('click',()=>disconnectRealtime());
+muteBtn.addEventListener('click',()=>{muted=!muted;remoteAudio.muted=muted;muteBtn.textContent=muted?'🔇 Sound off':'🔊 Sound on';muteBtn.classList.toggle('active',muted)});
+
+async function sendText(){const text=messageInput.value.trim();if(!text)return;messageInput.value='';appendMessage('user',text);try{if(!dc||dc.readyState!=='open'||connectionMode!=='text'){await startRealtime(false)}await waitForChannelOpen();dc.send(JSON.stringify({type:'conversation.item.create',item:{type:'message',role:'user',content:[{type:'input_text',text}]}}));dc.send(JSON.stringify({type:'response.create'}))}catch(err){appendMessage('system',err.message||'Could not send message.')}}
+sendBtn.addEventListener('click',sendText);messageInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendText()}});
+
+function handleRealtimeEvent(e){
+  let ev;try{ev=JSON.parse(e.data)}catch{return}
+  if(ev.type==='conversation.item.input_audio_transcription.completed'&&ev.transcript){appendMessage('user',ev.transcript)}
+  if(ev.type==='response.output_audio_transcript.delta'||ev.type==='response.output_text.delta'){
+    const delta=ev.delta||'';if(!delta)return;if(!assistantDraft)assistantDraft=appendMessage('assistant','');assistantDraft.textContent+=delta;chat.scrollTop=chat.scrollHeight
+  }
+  if(ev.type==='response.output_audio_transcript.done'||ev.type==='response.output_text.done'){assistantDraft=null}
+  if(ev.type==='response.done'){
+    assistantDraft=null;
+    const calls=(ev.response?.output||[]).filter(x=>x.type==='function_call');
+    calls.forEach(handleFunctionCall);
+  }
+  if(ev.type==='error'){console.error('Realtime error',ev);appendMessage('system','The AI encountered an error. Please try again.')}
+}
+
+async function handleFunctionCall(call){
+  let result;try{const args=JSON.parse(call.arguments||'{}');if(call.name==='configure_quote')result=configureQuote(args);else result={ok:false,error:'Unknown tool'}}catch(err){result={ok:false,error:err.message||'Could not configure quote'}}
+  if(!dc||dc.readyState!=='open')return;
+  dc.send(JSON.stringify({type:'conversation.item.create',item:{type:'function_call_output',call_id:call.call_id,output:JSON.stringify(result)}}));
+  dc.send(JSON.stringify({type:'response.create'}));
+}
+
+function calculatorDoc(){try{return frame.contentDocument}catch{return null}}
+function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function selectOperation(d,id){const el=d.querySelector(`[data-op="${id}"]`);if(!el||el.disabled)return false;if(!el.checked)el.click();return true}
+function setChoice(d,id,wanted){const sel=d.querySelector(`select[data-choice="${id}"]`);if(!sel)return {ok:false,options:[]};const opts=Array.from(sel.options);if(!wanted)return {ok:true,selected:null,options:opts.map(o=>o.textContent)};const target=norm(wanted);const idx=opts.findIndex(o=>norm(o.textContent).includes(target));if(idx<0)return {ok:false,selected:null,options:opts.map(o=>o.textContent)};sel.selectedIndex=idx;sel.dispatchEvent(new Event('change',{bubbles:true}));return {ok:true,selected:opts[idx].textContent,options:opts.map(o=>o.textContent)}}
+function configureQuote(args){
+  const d=calculatorDoc();if(!d||!d.getElementById('model'))return {ok:false,error:'Calculator is still loading. Please try again.'};
+  const model=String(args.model||'');const modelSelect=d.getElementById('model');if(!Array.from(modelSelect.options).some(o=>o.value===model))return {ok:false,error:'Unsupported model',model};
+  const reset=d.getElementById('reset');if(reset)reset.click();
+  modelSelect.value=model;modelSelect.dispatchEvent(new Event('change',{bubbles:true}));
+  const qty=Math.max(1,Math.min(100000,Number(args.quantity)||1));const qtyEl=d.getElementById('qty');qtyEl.value=qty;qtyEl.dispatchEvent(new Event('input',{bubbles:true}));
+  const missing=[];for(const op of (args.operations||[])){if(!selectOperation(d,op))missing.push(op)}
+  const pf=d.getElementById('polFront'),pb=d.getElementById('polBack'),ios=d.getElementById('ios');if(pf){pf.checked=!!args.polish_front;pf.dispatchEvent(new Event('input',{bubbles:true}))}if(pb){pb.checked=!!args.polish_back;pb.dispatchEvent(new Event('input',{bubbles:true}))}if(ios){ios.checked=!!args.ios_update;ios.dispatchEvent(new Event('input',{bubbles:true}))}
+  const clarification=[];let battery=null,display=null;
+  if((args.operations||[]).includes('battery')){const choices=setChoice(d,'battery',args.battery_type);battery=choices.selected;if(!args.battery_type&&choices.options.length>1)clarification.push({field:'battery_type',question:'Which battery option would you like?',options:choices.options});else if(args.battery_type&&!choices.ok)clarification.push({field:'battery_type',question:'That battery option is not available for this model. Which option would you like?',options:choices.options})}
+  if((args.operations||[]).includes('lcd')){const choices=setChoice(d,'lcd',args.display_quality);display=choices.selected;if(!args.display_quality&&choices.options.length>1)clarification.push({field:'display_quality',question:'Which display quality would you like?',options:choices.options});else if(args.display_quality&&!choices.ok)clarification.push({field:'display_quality',question:'That display quality is not available for this model. Which option would you like?',options:choices.options})}
+  resizeFrame();
+  if(missing.length)return {ok:false,error:'Some requested operations are not listed for this model',missing};
+  if(clarification.length)return {ok:false,needs_clarification:true,model,operations:args.operations,clarification};
+  const text=id=>d.getElementById(id)?.textContent||'';
+  return {ok:true,model,operations:args.operations,battery_option:battery,display_option:display,quantity:qty,unit_total:text('unitTotal'),lot_total:text('lotTotal'),breakdown:{parts_materials:text('parts'),repair_labor:text('labor'),processing:text('processing'),cosmetic_software:text('extras')},notes:(args.operations||[]).includes('board')?['Board repair parts remain on quote unless manually entered.']:[]};
+}
+</script>
+</body>
+</html>
