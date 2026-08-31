@@ -1,0 +1,6 @@
+{
+  "name": "remalab-cost-calculator",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" }
+}
