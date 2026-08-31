@@ -1,5 +1,7 @@
 import crypto from 'node:crypto';
 
+export const config = { runtime: 'nodejs' };
+
 const ACCESS_HASH = '05bb78c81b2bcc8f47910b62c09b3d857e75ea99f021875511eeeca3b3a9bdd8';
 
 const SYSTEM_INSTRUCTIONS = `You are Remalab Repair Assistant, a warm, concise B2B smartphone repair expert working for Remalab Teknoloji.
@@ -61,14 +63,32 @@ function hash(value) {
   return crypto.createHash('sha256').update(String(value || '')).digest('hex');
 }
 
+function getApiKey() {
+  // OPENAI_API_KEY is the recommended Vercel variable name.
+  // The two fallbacks make the deployment tolerant if the key was saved under
+  // the friendly Remalab name used during setup.
+  return process.env.OPENAI_API_KEY || process.env.REMALABCOST || process.env.remalabcost || '';
+}
+
+function safeOpenAIError(status, data) {
+  if (status === 401) return 'OpenAI rejected the API key. Please create a valid API key and update the Vercel environment variable, then redeploy.';
+  if (status === 403) return 'The OpenAI API project does not have permission to start a Realtime session.';
+  if (status === 429) return 'OpenAI Realtime is unavailable for this API account right now. Please check API billing/credits and rate limits.';
+  const message = data?.error?.message;
+  return message ? `OpenAI could not start the Realtime session: ${message}` : 'OpenAI could not start the Realtime session.';
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (!process.env.OPENAI_API_KEY) {
-    return res.status(500).json({ error: 'OPENAI_API_KEY is not configured' });
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    return res.status(500).json({
+      error: 'No OpenAI API key is available to this Vercel deployment. Add OPENAI_API_KEY (recommended) or remalabcost under Project → Environment Variables for Production, then redeploy.'
+    });
   }
 
   const accessCode = req.headers['x-remalab-access-code'];
@@ -111,7 +131,7 @@ export default async function handler(req, res) {
     const openaiResponse = await fetch('https://api.openai.com/v1/realtime/client_secrets', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'OpenAI-Safety-Identifier': safetyId
       },
@@ -124,13 +144,13 @@ export default async function handler(req, res) {
     const data = await openaiResponse.json();
     if (!openaiResponse.ok) {
       console.error('OpenAI client secret error', openaiResponse.status, data);
-      return res.status(openaiResponse.status).json({ error: 'Could not start AI session' });
+      return res.status(openaiResponse.status).json({ error: safeOpenAIError(openaiResponse.status, data) });
     }
 
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json(data);
   } catch (error) {
     console.error('Realtime token error', error);
-    return res.status(500).json({ error: 'Could not start AI session' });
+    return res.status(500).json({ error: 'The server could not reach OpenAI to start the Realtime session.' });
   }
 }
