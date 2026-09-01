@@ -1,0 +1,26 @@
+name: Upgrade voice and manual UX
+on:
+  push:
+    paths:
+      - 'scripts/upgrade_voice_manual_v2.py'
+      - '.github/workflows/upgrade-voice-manual-v2.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: python scripts/upgrade_voice_manual_v2.py
+      - name: Commit changes
+        run: |
+          git config user.name "remalab-teknoloji"
+          git config user.email "kerim@remalab.com"
+          git add -A
+          git commit -m "Improve voice stability and promote manual simulator [skip ci]" || exit 0
+          git push
