@@ -106,7 +106,7 @@ export default async function handler(req, res) {
     model: 'gpt-realtime-2.1',
     output_modalities: ['audio'],
     instructions: SYSTEM_INSTRUCTIONS,
-    max_output_tokens: 900,
+    max_output_tokens: 1200,
     tool_choice: 'auto',
     tools: [TOOL],
     audio: {
@@ -118,8 +118,9 @@ export default async function handler(req, res) {
         },
         turn_detection: {
           type: 'semantic_vad',
+          eagerness: 'low',
           create_response: true,
-          interrupt_response: true
+          interrupt_response: false
         }
       },
       output: {
