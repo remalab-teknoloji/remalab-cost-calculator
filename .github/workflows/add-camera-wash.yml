@@ -1,0 +1,22 @@
+name: Add Camera Wash pricing
+on:
+  push:
+    paths:
+      - '.github/workflows/add-camera-wash.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Camera Wash update
+        run: python scripts/add_camera_wash.py
+      - name: Commit update
+        run: |
+          git config user.name "remalab-teknoloji"
+          git config user.email "kerim@remalab.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Add Camera Wash €4.50 plus labor [skip ci]"
+          git push
