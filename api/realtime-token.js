@@ -23,7 +23,7 @@ Supported operations and client language:
 - charging: charging port/socket.
 - maincamera: complete rear/main camera replacement.
 - camerarepair: repair of the main camera rather than replacement.
-- blackspots: camera black spots/dust cleaning repair.
+- blackspots: Camera Wash. Use this when the client reports black spots, stains, marks or dust visible through the camera. The calculator applies a €4.50 camera-wash fee plus the applicable repair labor. Do not choose a full camera replacement unless the client describes an actual camera failure or explicitly asks for replacement. French examples: taches noires, taches sur la caméra, poussière caméra. Turkish examples: kamera lekesi, siyah nokta, kamera tozu.
 - frontcamera: front camera / TrueDepth intervention.
 - faceid: Face ID repair.
 - board: board-level / microsoldering repair.
